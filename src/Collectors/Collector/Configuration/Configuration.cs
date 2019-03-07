@@ -25,11 +25,13 @@ namespace Collector
 
         public static void Initialize()
         {
-            var diretorio = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}";
+            var directory = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}";
             var builder = new ConfigurationBuilder().SetBasePath(AppContext.BaseDirectory);
 
-            builder.AddJsonFile($"{diretorio}/Configuration/configuration.json");
+            builder.AddJsonFile($"{directory}/Configuration/configuration.json");
             _configuration = builder.Build();
+
+            _configuration.Get<Configuration>();
         }
     }
 }
