@@ -1,0 +1,15 @@
+{
+    "Host": "",
+
+    "Port": "",
+
+    "VirtualHost": "",
+
+    "User": "",
+
+    "Password": "3",
+
+    "Exchange": "3",
+
+    "RoutingKey": "3"
+}
