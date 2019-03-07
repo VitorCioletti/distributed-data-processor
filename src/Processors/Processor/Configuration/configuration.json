@@ -1,0 +1,29 @@
+{
+    "MessageQueue":
+    {
+        "Host": "a",
+
+        "Port": "a",
+
+        "VirtualHost": "a",
+
+        "User": "a",
+
+        "Password": "3",
+
+        "Exchange": "3",
+
+        "RoutingKey": "3"
+    },
+
+    "Persistence":
+    {
+        "Host": "d",
+
+        "Port": "d",
+        
+        "User": "d",
+
+        "Password": "3"
+    }
+}
