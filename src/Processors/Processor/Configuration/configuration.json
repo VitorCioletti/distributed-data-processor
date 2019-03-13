@@ -18,6 +18,8 @@
 
     "Persistence":
     {
+        "Database": "db",
+        
         "Host": "d",
 
         "Port": "d",
