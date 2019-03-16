@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Configuration/*.json" CopyToOutputDirectory="Always" />
+    <Content Include="config.json" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
 </Project>

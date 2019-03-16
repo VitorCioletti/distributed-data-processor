@@ -20,7 +20,7 @@ namespace Twitter
             var directory = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}";
             var builder = new ConfigurationBuilder().SetBasePath(AppContext.BaseDirectory);
 
-            builder.AddJsonFile($"{directory}/Configuration/configuration.json");
+            builder.AddJsonFile($"{directory}/config.json");
             _configuration = builder.Build();
 
             _configuration.Get<Configuration>();
