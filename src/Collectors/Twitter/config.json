@@ -16,8 +16,10 @@
     },
     "Twitter": 
     {
-        "ApiKey": "",
-        "ApiRoute": "",
-        "ApiAddress": ""
+        "Consumer": "",
+        "ConsumerSecret": "",
+        "AccessToken": "",
+        "AccessTokenSecret": "",
+        "WordToSearch": "suzano"
     }
 }
