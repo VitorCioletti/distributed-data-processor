@@ -25,12 +25,15 @@ namespace Twitter
 
         public void Collect()
         {
+            if (_awaitingTweets == null)
+                throw new Exception("Collector not initialized");
+
             Task.Run(
                 () =>
                 {
                     for (;;)
                     {
-                        _awaitingTweets.AddRange(Twitter.GetTweets());
+                        _awaitingTweets.AddRange(new List<Tweet>());
 
                         if (!TrySend(_awaitingTweets))
                         {
