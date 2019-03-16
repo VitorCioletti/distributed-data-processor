@@ -4,6 +4,7 @@ namespace Twitter
     using System.Text;
     using RabbitMQ.Client;
     using System.Collections.Generic;
+    using Newtonsoft.Json;
 
     public class MessageQueue
     {
@@ -49,13 +50,13 @@ namespace Twitter
 
             foreach (var message in messages)
             {
-                // var json = JsonConvert.Serialize(message);
+                var json = JsonConvert.SerializeObject(message);
 
-                var bytes = Encoding.UTF8.GetBytes(message.ToString());
+                var bytes = Encoding.UTF8.GetBytes(json);
 
                 _channel.BasicPublish(Configuration.MessageQueue.Exchange, Configuration.MessageQueue.RoutingKey, true, null, bytes);
 
-                // Log.Write("MessageQueue", $"Sent message: '{json}'.");
+                Log.Write("MessageQueue", $"Sent message: '{json}'.");
             }
 
             return true;
