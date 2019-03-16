@@ -1,0 +1,23 @@
+{
+    "Collector":
+    {
+        "MaximumAwaitingMessagesSize": 1000,
+        "CollectDelay": 1000
+    },
+    "MessageQueue":
+    {
+        "Host": "",
+        "Port": 33,
+        "VirtualHost": "",
+        "User": "",
+        "Password": "3",
+        "Exchange": "3",
+        "RoutingKey": "3"
+    },
+    "Twitter": 
+    {
+        "ApiKey": "",
+        "ApiRoute": "",
+        "ApiAddress": ""
+    }
+}

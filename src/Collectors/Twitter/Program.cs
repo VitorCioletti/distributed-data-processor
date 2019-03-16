@@ -1,4 +1,4 @@
-﻿namespace Collector
+﻿namespace Twitter
 {
     using System;
     using System.Threading;
@@ -11,20 +11,32 @@
 
         static void Main(string[] args)
         {
-            Initialize();
+            try
+            {
+                Initialize();
+            }
+            catch (Exception e)
+            {
+                Log.Write("Initialization", $"An error has occurred. {e.Message} {e.StackTrace}");
+
+                Environment.Exit(0);   
+            }
 
             Thread.Sleep(-1);
         }
 
         private static void Initialize()
         {
-            Log.Initialize();
             Configuration.Initialize();
+            Backup.Initialize();
 
             _collector = new Collector();
             _messageQueue = new MessageQueue();
 
-            _collector.Send += (message) => _messageQueue.Send(message);
+            Func<IEnumerable<object>, bool> trySend = message => _messageQueue.TrySend(message);
+ 
+            _collector.TrySend += trySend;
+            Backup.TrySend += trySend;
 
             _collector.Collect();
 

@@ -1,17 +1,16 @@
-namespace Collector
+namespace Twitter
 {
     using System;
     using System.Text;
     using RabbitMQ.Client;
-    using static Configuration;
+    using System.Collections.Generic;
+    using static Configuration.MessageQueue;
 
     public class MessageQueue
     {
         private IConnection _connection;
 
-        private string _routingKey;
-
-        private string _exchange;
+        private IModel _channel;
 
         public void Initialize()
         {
@@ -25,6 +24,8 @@ namespace Collector
                 Port = Port,
                 VirtualHost = VirtualHost,
             }.CreateConnection();
+
+            _channel = _connection.CreateModel();
         
             Log.Write("MessageQueue", "Initialized message queue.");
         }
@@ -34,23 +35,31 @@ namespace Collector
             _connection.Dispose();
 
             _connection = null;
+            _channel = null;
 
             Log.Write("MessageQueue", "Finalized message queue.");
         }
 
-        public void Send(string json)
+        public bool TrySend(IEnumerable<object> messages)
         {
             if (_connection == null)
-                throw new InvalidOperationException($"Connection '{_connection}' not initialized.");
+                throw new InvalidOperationException($"Connection '{nameof(_connection)}' not initialized.");
 
-            using (var channel = _connection.CreateModel())
+            if (_channel == null)
+                throw new InvalidOperationException($"Channel '{nameof(_channel)}' not initialized.");
+
+            foreach (var message in messages)
             {
-                var bytes = Encoding.UTF8.GetBytes(json);
+                // var json = JsonConvert.Serialize(message);
 
-                channel.BasicPublish(_exchange, _routingKey, true, null, bytes);
-                
-                Log.Write("MessageQueue", $"Sent message: '{json}'.");
+                var bytes = Encoding.UTF8.GetBytes(message);
+
+                _channel.BasicPublish(Exchange, RoutingKey, true, null, bytes);
+
+                // Log.Write("MessageQueue", $"Sent message: '{json}'.");
             }
+
+            return true;
         }
     }
 }

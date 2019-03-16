@@ -15,7 +15,6 @@
 
         "RoutingKey": "3"
     },
-
     "Persistence":
     {
         "Database": "db",

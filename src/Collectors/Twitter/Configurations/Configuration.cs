@@ -1,4 +1,4 @@
-namespace Collector
+namespace Twitter
 {
     using System;
     using System.IO;
@@ -7,19 +7,11 @@ namespace Collector
 
     public class Configuration
     {
-        public static string Host { get; set; }
+        public static MessageQueueConfiguration MessageQueue { get; set; }
 
-        public static int Port { get; set; }
+        public static CollectorConfiguration Collector { get; set; }
 
-        public static string VirtualHost { get; set; }
-
-        public static string User { get; set; }
-
-        public static string Password { get; set; }
-
-        public static string Exchange { get; set; }
-
-        public static string RoutingKey { get; set; }
+        public static TwitterConfiguration Twitter { get; set; }
 
         private static IConfigurationRoot _configuration;
 
