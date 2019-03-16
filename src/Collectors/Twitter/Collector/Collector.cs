@@ -10,7 +10,7 @@ namespace Twitter
     {
         public event Func<IEnumerable<Tweet>, bool> TrySend;
 
-        private IEnumerable<Tweet> _awaitingTweets;
+        private List<Tweet> _awaitingTweets;
 
         public void Initialize()
         {
@@ -30,17 +30,15 @@ namespace Twitter
                 {
                     for (;;)
                     {
-                        _awaitingTweets.Add(Twitter.GetTweets());
+                        _awaitingTweets.AddRange(Twitter.GetTweets());
 
                         if (!TrySend(_awaitingTweets))
                         {
-                            if (_awaitingTweets.Count() > Configuration.MaximumAwaitingMessagesSize)
+                            if (_awaitingTweets.Count() > Configuration.Collector.MaximumAwaitingMessagesSize)
                                 StoreAwaitingTweets();
-
-                            _awaitingTweets.Add(message);
                         }
 
-                        Task.Delay(Configuration.CollectDelay);
+                        Task.Delay(Configuration.Collector.CollectDelay);
                     }
                 }
             ).ContinueWith(

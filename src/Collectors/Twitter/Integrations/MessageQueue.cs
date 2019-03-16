@@ -4,7 +4,6 @@ namespace Twitter
     using System.Text;
     using RabbitMQ.Client;
     using System.Collections.Generic;
-    using static Configuration.MessageQueue;
 
     public class MessageQueue
     {
@@ -18,11 +17,11 @@ namespace Twitter
 
             _connection = new ConnectionFactory
             { 
-                HostName = Host,
-                UserName = User, 
-                Password = Password, 
-                Port = Port,
-                VirtualHost = VirtualHost,
+                HostName = Configuration.MessageQueue.Host,
+                UserName = Configuration.MessageQueue.User, 
+                Password = Configuration.MessageQueue.Password, 
+                Port = Configuration.MessageQueue.Port,
+                VirtualHost = Configuration.MessageQueue.VirtualHost,
             }.CreateConnection();
 
             _channel = _connection.CreateModel();
@@ -52,9 +51,9 @@ namespace Twitter
             {
                 // var json = JsonConvert.Serialize(message);
 
-                var bytes = Encoding.UTF8.GetBytes(message);
+                var bytes = Encoding.UTF8.GetBytes(message.ToString());
 
-                _channel.BasicPublish(Exchange, RoutingKey, true, null, bytes);
+                _channel.BasicPublish(Configuration.MessageQueue.Exchange, Configuration.MessageQueue.RoutingKey, true, null, bytes);
 
                 // Log.Write("MessageQueue", $"Sent message: '{json}'.");
             }

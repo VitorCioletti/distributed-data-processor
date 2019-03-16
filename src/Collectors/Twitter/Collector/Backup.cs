@@ -17,7 +17,7 @@ namespace Twitter
             
         }
 
-        public static void Write(IEnumerable<string> messages)
+        public static void Write(IEnumerable<Tweet> messages)
         {
             
         }
