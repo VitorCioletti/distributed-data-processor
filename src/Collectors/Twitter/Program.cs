@@ -30,6 +30,9 @@
         {
             Configuration.Initialize();
             Backup.Initialize();
+            Twitter.Initialize();
+
+            Thread.Sleep(-1);
 
             _collector = new Collector();
             _messageQueue = new MessageQueue();
