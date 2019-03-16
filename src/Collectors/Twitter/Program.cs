@@ -28,6 +28,8 @@
 
         private static void Initialize()
         {
+            ConfigureCurrentDomainEvents();
+
             Configuration.Initialize();
             Backup.Initialize();
             Twitter.Initialize();
