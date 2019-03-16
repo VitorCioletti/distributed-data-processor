@@ -30,14 +30,14 @@
         {
             ConfigureCurrentDomainEvents();
 
+            _collector = new Collector();
+            _messageQueue = new MessageQueue();
+
+            _collector.Initialize();
+            _messageQueue.Initialize();
             Configuration.Initialize();
             Backup.Initialize();
             Twitter.Initialize();
-
-            Thread.Sleep(-1);
-
-            _collector = new Collector();
-            _messageQueue = new MessageQueue();
 
             Func<IEnumerable<object>, bool> trySend = message => _messageQueue.TrySend(message);
  
