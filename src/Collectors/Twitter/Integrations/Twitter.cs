@@ -19,19 +19,34 @@ namespace Twitter
                 Configuration.Twitter.AccessTokenSecret
             );
 
+            RateLimit.RateLimitTrackerMode = RateLimitTrackerMode.TrackAndAwait;
+
             _stream = Stream.CreateFilteredStream();
 
             Log.Write("Twitter", "Initialized Twitter.");
         }
 
-        public static void GetTweets()
+        public static void StartTweetStreaming()
         {
             if (_stream == null)
                 throw new Exception("Twitter integration not initialized");
 
             _stream.AddTrack(Configuration.Twitter.WordToSearch);
 
-            _stream.MatchingTweetReceived += (_, args) => Log.Write("Twitter", $"Received tweet: '{args.Tweet}'");
+            _stream.MatchingTweetReceived += (_, args) => 
+            {
+                Log.Write("Twitter", $"Received tweet: '{args.Tweet}'");
+
+                Collector.Collect(
+                    new Tweet
+                    {
+                        IdCreator = args.Tweet.Id.ToString(),
+                        PostedOn = args.Tweet.CreatedAt,
+                        Text = args.Tweet.Text,
+                        Subject = Configuration.Twitter.WordToSearch,
+                    }
+                );
+            };
             _stream.StreamStarted += (_, __) => Log.Write("Twitter", "Started stream.");
             _stream.StreamPaused += (_, __) => Log.Write("Twitter", "Paused stream.");
 
