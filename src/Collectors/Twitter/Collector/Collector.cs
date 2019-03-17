@@ -6,51 +6,38 @@ namespace Twitter
     using System.Threading.Tasks;
     using System.Collections.Generic;
 
-    public class Collector
+    public static class Collector
     {
-        public event Func<IEnumerable<Tweet>, bool> TrySend;
+        public static event Func<IEnumerable<Tweet>, bool> TrySend;
 
-        private List<Tweet> _awaitingTweets;
+        private static List<Tweet> _awaitingTweets;
 
-        public void Initialize()
+        public static void Initialize()
         {
             _awaitingTweets = new List<Tweet>();
             Log.Write("Collector","Initialized collector.");
         }
 
-        public void Finalize()
+        public static void Finalize()
         {
             Log.Write("Collector", "Finalized collector.");
         }
 
-        public void Collect()
+        public static void Collect(Tweet tweet)
         {
             if (_awaitingTweets == null)
                 throw new Exception("Collector not initialized");
 
-            Task.Run(
-                () =>
-                {
-                    for (;;)
-                    {
-                        _awaitingTweets.AddRange(new List<Tweet>());
+            _awaitingTweets.Add(tweet);
 
-                        if (!TrySend(_awaitingTweets))
-                        {
-                            if (_awaitingTweets.Count() > Configuration.Collector.MaximumAwaitingMessagesSize)
-                                StoreAwaitingTweets();
-                        }
-
-                        Task.Delay(Configuration.Collector.CollectDelay);
-                    }
-                }
-            ).ContinueWith(
-                (e) => Log.Write("Collector", $"{e.Exception.Message} {e.Exception.StackTrace}"),
-                TaskContinuationOptions.OnlyOnFaulted
-            );
+            if (!TrySend(_awaitingTweets))
+            {
+                if (_awaitingTweets.Count() > Configuration.Collector.MaximumAwaitingMessagesSize)
+                    StoreAwaitingTweets();
+            }
         }
 
-        private void StoreAwaitingTweets()
+        private static void StoreAwaitingTweets()
         {
             Backup.Write(_awaitingTweets);
             _awaitingTweets.Clear();
