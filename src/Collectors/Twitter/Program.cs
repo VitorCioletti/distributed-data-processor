@@ -6,8 +6,6 @@
 
     class Program
     {
-        private static Collector _collector;
-
         private static MessageQueue _messageQueue;
 
         static void Main(string[] args)
@@ -15,38 +13,35 @@
             try
             {
                 Initialize();
+
+                Twitter.StartTweetStreaming();
+
+                Thread.Sleep(-1);
             }
             catch (Exception e)
             {
                 Log.Write("Initialization", $"An error has occurred. {e.Message} {e.StackTrace}");
-
-                Environment.Exit(0);   
             }
-
-            Thread.Sleep(-1);
         }
 
         private static void Initialize()
         {
             ConfigureCurrentDomainEvents();
+            Configuration.Initialize();
 
-            _collector = new Collector();
             _messageQueue = new MessageQueue();
 
-            _collector.Initialize();
             _messageQueue.Initialize();
-            Configuration.Initialize();
+            Collector.Initialize();
             Backup.Initialize();
             Twitter.Initialize();
 
             Func<IEnumerable<object>, bool> trySend = message => _messageQueue.TrySend(message);
  
-            _collector.TrySend += trySend;
+            Collector.TrySend += trySend;
             Backup.TrySend += trySend;
 
-            _collector.Collect();
-
-            Log.Write("Initialized", "Initialized program.");
+            Log.Write("Initialization", "Initialized program.");
         }
 
         private static void ConfigureCurrentDomainEvents()
@@ -55,7 +50,7 @@
             
             Action finalizeConnections = () =>
             {
-                _collector.Finalize();
+                Collector.Finalize();
                 _messageQueue.Finalize();
             };
 
