@@ -21,23 +21,22 @@ namespace Twitter
                 HostName = Configuration.MessageQueue.Host,
                 UserName = Configuration.MessageQueue.User, 
                 Password = Configuration.MessageQueue.Password, 
-                Port = Configuration.MessageQueue.Port,
                 VirtualHost = Configuration.MessageQueue.VirtualHost,
             }.CreateConnection();
 
             _channel = _connection.CreateModel();
         
-            Log.Write("MessageQueue", "Initialized message queue.");
+            Log.Write("Message Queue", "Initialized message queue.");
         }
 
         public void Finalize()
         {
-            _connection.Dispose();
+            _connection?.Dispose();
 
             _connection = null;
             _channel = null;
 
-            Log.Write("MessageQueue", "Finalized message queue.");
+            Log.Write("Message Queue", "Finalized message queue.");
         }
 
         public bool TrySend(IEnumerable<object> messages)
@@ -54,9 +53,15 @@ namespace Twitter
 
                 var bytes = Encoding.UTF8.GetBytes(json);
 
-                _channel.BasicPublish(Configuration.MessageQueue.Exchange, Configuration.MessageQueue.RoutingKey, true, null, bytes);
+                _channel.BasicPublish(
+                    Configuration.MessageQueue.Exchange, 
+                    Configuration.MessageQueue.RoutingKey, 
+                    true, 
+                    null, 
+                    bytes
+                );
 
-                Log.Write("MessageQueue", $"Sent message: '{json}'.");
+                Log.Write("Message Queue", $"Sent message: '{json}'.");
             }
 
             return true;
