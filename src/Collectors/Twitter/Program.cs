@@ -21,6 +21,7 @@
             catch (Exception e)
             {
                 Log.Write("Initialization", $"An error has occurred. {e.Message} {e.StackTrace}");
+
             }
         }
 
@@ -33,10 +34,9 @@
 
             _messageQueue.Initialize();
             Collector.Initialize();
-            Backup.Initialize();
             Twitter.Initialize();
 
-            Func<IEnumerable<object>, bool> trySend = message => _messageQueue.TrySend(message);
+            Func<Message, bool> trySend = message => _messageQueue.TrySend(message);
  
             Collector.TrySend += trySend;
             Backup.TrySend += trySend;

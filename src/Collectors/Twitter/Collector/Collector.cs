@@ -8,13 +8,13 @@ namespace Twitter
 
     public static class Collector
     {
-        public static event Func<IEnumerable<Tweet>, bool> TrySend;
+        public static event Func<Message, bool> TrySend;
 
-        private static List<Tweet> _awaitingTweets;
+        private static List<Message> _awaitingMessages;
 
         public static void Initialize()
         {
-            _awaitingTweets = new List<Tweet>();
+            _awaitingMessages = new List<Message>();
             Log.Write("Collector","Initialized collector.");
         }
 
@@ -23,24 +23,37 @@ namespace Twitter
             Log.Write("Collector", "Finalized collector.");
         }
 
-        public static void Collect(Tweet tweet)
+        public static void Collect(Message message)
         {
-            if (_awaitingTweets == null)
+            if (_awaitingMessages == null)
                 throw new Exception("Collector not initialized");
 
-            _awaitingTweets.Add(tweet);
+            _awaitingMessages.Add(message);
 
-            if (!TrySend(_awaitingTweets))
+            var succeded = true;
+
+            foreach (var awaitingTweet in _awaitingMessages)
             {
-                if (_awaitingTweets.Count() > Configuration.Collector.MaximumAwaitingMessagesSize)
+                if (!TrySend(awaitingTweet))
+                {
+                    succeded = false;
+                    break;
+                }
+            }
+
+            if (!succeded)
+            {
+                if (_awaitingMessages.Count() > Configuration.Collector.MaximumAwaitingMessagesSize)
                     StoreAwaitingTweets();
             }
+            else
+                _awaitingMessages.Clear();
         }
 
         private static void StoreAwaitingTweets()
         {
-            Backup.Write(_awaitingTweets);
-            _awaitingTweets.Clear();
+            Backup.Write(_awaitingMessages);
+            _awaitingMessages.Clear();
         }
     }
 }

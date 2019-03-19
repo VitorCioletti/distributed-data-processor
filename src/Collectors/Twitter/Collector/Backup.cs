@@ -2,29 +2,27 @@ namespace Twitter
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     public static class Backup
     {
-        public static event Func<IEnumerable<object>, bool> TrySend;
+        public static event Func<Message, bool> TrySend;
 
-        public static void Initialize()
+        public static void Write(IEnumerable<Message> messages)
         {
-
+            using (var streamWriter = new StreamWriter(Configuration.Collector.BackupFile, true))
+            {
+                foreach (var message in messages)
+                    streamWriter.WriteLine(message);
+            }
         }
 
-        public static void Finalize()
+        private static void Clear(int messages)
         {
-            
-        }
-
-        public static void Write(IEnumerable<Tweet> messages)
-        {
-            
-        }
-
-        private static void Clear(IEnumerable<string> messages)
-        {
-
+            using (var streamReader = new StreamReader(Configuration.Collector.BackupFile))
+            {
+ 
+            }
         }
     }
 }

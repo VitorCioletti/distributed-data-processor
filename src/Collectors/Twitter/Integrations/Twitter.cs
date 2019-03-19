@@ -35,14 +35,14 @@ namespace Twitter
 
             _stream.MatchingTweetReceived += (_, args) => 
             {
-                Log.Write("Twitter", $"Received tweet: '{args.Tweet}'");
+                Log.Write("Twitter", $"Received tweet: '{args.Tweet.FullText}'");
 
                 Collector.Collect(
                     new Tweet
                     {
                         IdCreator = args.Tweet.Id.ToString(),
                         PostedOn = args.Tweet.CreatedAt,
-                        Text = args.Tweet.Text,
+                        Text = args.Tweet.FullText,
                         Subject = Configuration.Twitter.WordToSearch,
                     }
                 );

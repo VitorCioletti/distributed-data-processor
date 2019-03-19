@@ -39,7 +39,7 @@ namespace Twitter
             Log.Write("Message Queue", "Finalized message queue.");
         }
 
-        public bool TrySend(IEnumerable<object> messages)
+        public bool TrySend(Message message)
         {
             if (_connection == null)
                 throw new InvalidOperationException($"Connection '{nameof(_connection)}' not initialized.");
@@ -47,24 +47,32 @@ namespace Twitter
             if (_channel == null)
                 throw new InvalidOperationException($"Channel '{nameof(_channel)}' not initialized.");
 
-            foreach (var message in messages)
-            {
-                var json = JsonConvert.SerializeObject(message);
+            var json = JsonConvert.SerializeObject(message);
 
-                var bytes = Encoding.UTF8.GetBytes(json);
+            var bytes = Encoding.UTF8.GetBytes(json);
 
-                _channel.BasicPublish(
-                    Configuration.MessageQueue.Exchange, 
-                    Configuration.MessageQueue.RoutingKey, 
-                    true, 
-                    null, 
-                    bytes
-                );
+            _channel.BasicPublish(
+                Configuration.MessageQueue.Exchange, 
+                Configuration.MessageQueue.RoutingKey, 
+                true, 
+                null, 
+                bytes
+            );
 
-                Log.Write("Message Queue", $"Sent message: '{json}'.");
-            }
+            Log.Write("Message Queue", $"Sent message: '{json}'.");
 
             return true;
         }
+
+        public bool TrySend(IEnumerable<Message> messages)
+        {
+            foreach (var message in messages)
+            {
+                if (!TrySend(message))
+                    return false;
+            }
+
+            return true;
+        } 
     }
 }
