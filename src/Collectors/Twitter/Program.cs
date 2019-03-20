@@ -14,8 +14,6 @@
             {
                 Initialize();
 
-                Twitter.StartTweetStreaming();
-
                 Thread.Sleep(-1);
             }
             catch (Exception e)
@@ -40,6 +38,8 @@
  
             Collector.TrySend += trySend;
             Backup.TrySend += trySend;
+            
+            Twitter.StartTweetStreaming();
 
             Log.Write("Initialization", "Initialized program.");
         }
