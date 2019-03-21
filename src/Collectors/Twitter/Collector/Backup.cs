@@ -35,16 +35,13 @@ namespace Twitter
             _timer = null;
         }
 
-        public static void Write(IEnumerable<Message> messages)
+        public static void Write(Message message)
         {
-            foreach (var message in messages)
+            using (var file = File.Create($"{_folder}/{Guid.NewGuid()}.{_extension}"))
             {
-                using (var file = File.Create($"{_folder}/{Guid.NewGuid()}.{_extension}"))
-                {
-                    var bytes = new UTF8Encoding().GetBytes(JsonConvert.SerializeObject(message));
+                var bytes = new UTF8Encoding().GetBytes(JsonConvert.SerializeObject(message));
 
-                    file.Write(bytes, 0, bytes.Length);
-                }
+                file.Write(bytes, 0, bytes.Length);
             }
 
             if (GetBackupFiles().Any())

@@ -31,7 +31,6 @@
             _messageQueue = new MessageQueue();
 
             _messageQueue.Initialize();
-            Collector.Initialize();
             Twitter.Initialize();
 
             Func<Message, bool> trySend = message => _messageQueue.TrySend(message);

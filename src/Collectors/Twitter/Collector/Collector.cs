@@ -10,46 +10,10 @@ namespace Twitter
     {
         public static event Func<Message, bool> TrySend;
 
-        private static List<Message> _awaitingMessages;
-
-        public static void Initialize()
-        {
-            _awaitingMessages = new List<Message>();
-            
-            Log.WriteInitialized(typeof(Collector));
-        }
-
         public static void Collect(Message message)
         {
-            if (_awaitingMessages == null)
-                throw new Exception("Collector not initialized");
-
-            _awaitingMessages.Add(message);
-
-            var succeded = true;
-
-            foreach (var awaitingTweet in _awaitingMessages)
-            {
-                if (!TrySend(awaitingTweet))
-                {
-                    succeded = false;
-                    break;
-                }
-            }
-
-            if (!succeded)
-            {
-                if (_awaitingMessages.Count() > Configuration.Collector.MaximumAwaitingMessagesSize)
-                    StoreAwaitingTweets();
-            }
-            else
-                _awaitingMessages.Clear();
-        }
-
-        private static void StoreAwaitingTweets()
-        {
-            Backup.Write(_awaitingMessages);
-            _awaitingMessages.Clear();
+            if (!TrySend(message))
+                Backup.Write(message);
         }
     }
 }
