@@ -7,11 +7,9 @@ namespace Twitter
 
     public class Configuration
     {
-        public static MessageQueueConfiguration MessageQueue { get; set; }
-
         public static CollectorConfiguration Collector { get; set; }
 
-        public static TwitterConfiguration Twitter { get; set; }
+        public static IntegrationsConfiguration Integrations { get; set; }
 
         private static IConfigurationRoot _configuration;
 

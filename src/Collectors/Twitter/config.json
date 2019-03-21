@@ -6,22 +6,25 @@
         "BackupDelay": 600000,
         "BackupFolder": "backup"
     },
-    "MessageQueue":
+    "Integrations":
     {
-        "Host": "",
-        "Port": 33,
-        "VirtualHost": "",
-        "User": "",
-        "Password": "3",
-        "Exchange": "3",
-        "RoutingKey": "3"
-    },
-    "Twitter": 
-    {
-        "Consumer": "",
-        "ConsumerSecret": "",
-        "AccessToken": "",
-        "AccessTokenSecret": "",
-        "WordToSearch": "suzano"
+        "MessageQueue":
+        {
+            "Host": "",
+            "Port": 33,
+            "VirtualHost": "",
+            "User": "",
+            "Password": "3",
+            "Exchange": "3",
+            "RoutingKey": "3"
+        },
+        "Twitter": 
+        {
+            "Consumer": "",
+            "ConsumerSecret": "",
+            "AccessToken": "",
+            "AccessTokenSecret": "",
+            "WordToSearch": "suzano"
+        }
     }
 }

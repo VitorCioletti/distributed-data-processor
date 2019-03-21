@@ -5,6 +5,7 @@ namespace Twitter
     using System.Collections.Generic;
     using Tweetinvi;
     using Tweetinvi.Streaming;
+    using static Configuration;
 
     public static class Twitter
     {
@@ -13,10 +14,10 @@ namespace Twitter
         public static void Initialize()
         {
             Auth.SetUserCredentials(
-                Configuration.Twitter.Consumer,
-                Configuration.Twitter.ConsumerSecret,
-                Configuration.Twitter.AccessToken,
-                Configuration.Twitter.AccessTokenSecret
+                Integrations.Twitter.Consumer,
+                Integrations.Twitter.ConsumerSecret,
+                Integrations.Twitter.AccessToken,
+                Integrations.Twitter.AccessTokenSecret
             );
 
             RateLimit.RateLimitTrackerMode = RateLimitTrackerMode.TrackAndAwait;
@@ -31,7 +32,7 @@ namespace Twitter
             if (_stream == null)
                 throw new Exception("Twitter integration not initialized");
 
-            _stream.AddTrack(Configuration.Twitter.WordToSearch);
+            _stream.AddTrack(Integrations.Twitter.WordToSearch);
 
             _stream.MatchingTweetReceived += (_, args) => 
             {
@@ -43,7 +44,7 @@ namespace Twitter
                         IdCreator = args.Tweet.Id.ToString(),
                         PostedOn = args.Tweet.CreatedAt,
                         Text = args.Tweet.FullText,
-                        Subject = Configuration.Twitter.WordToSearch,
+                        Subject = Integrations.Twitter.WordToSearch,
                     }
                 );
             };
