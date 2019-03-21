@@ -15,8 +15,8 @@ namespace Twitter
             WriteLine($"{DateTime.Now} {label.ToUpper()} - {log}");
         }
 
-        public static void WriteInitialized(object t) => Write("Initialization", $"Initialized {t.GetType().Name}.");
+        public static void WriteInitialized(Type t) => Write("Initialization", $"Initialized {t.Name}.");
     
-        public static void WriteFinalized(object t) => Write("Finalization", $"Finalized {t.GetType().Name}.");
+        public static void WriteFinalized(Type t) => Write("Finalization", $"Finalized {t.Name}.");
     }
 }
