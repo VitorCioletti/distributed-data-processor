@@ -27,25 +27,32 @@ namespace Twitter
             _timer.AutoReset = true;
 
             _timer.Elapsed += SearchAndTrySend;
+
+            Log.WriteInitialized(typeof(Backup));
         }
 
         public static void Finalize()
         {
             _timer.Dispose();
             _timer = null;
+
+            Log.WriteFinalized(typeof(Backup));
         }
 
         public static void Write(Message message)
         {
-            using (var file = File.Create($"{_folder}/{Guid.NewGuid()}.{_extension}"))
+            var guid = Guid.NewGuid();
+
+            using (var file = File.Create($"{_folder}/{guid}.{_extension}"))
             {
                 var bytes = new UTF8Encoding().GetBytes(JsonConvert.SerializeObject(message));
 
                 file.Write(bytes, 0, bytes.Length);
+
+                Log.Write("Backup", $"Created \"{guid}.{_extension}\" backup file.");
             }
 
-            if (GetBackupFiles().Any())
-                _timer.Start();
+            _timer.Start();
         }
 
         private static void SearchAndTrySend(object _, ElapsedEventArgs __)
@@ -56,7 +63,15 @@ namespace Twitter
                 {
                     _timer.Stop();
                     _timer.Start();
+
+                    Log.Write("Backup", $"Failed to send \"{file}\" message to message queue.");
+
+                    break;
                 }
+
+                File.Delete(file);
+
+                Log.Write("Backup", $"Message \"{file}\" successfully sent to message queue.");
             }
 
             if (GetBackupFiles().Any())

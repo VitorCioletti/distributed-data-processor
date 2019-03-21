@@ -27,6 +27,7 @@
         {
             ConfigureCurrentDomainEvents();
             Configuration.Initialize();
+            Backup.Initialize();
 
             _messageQueue = new MessageQueue();
 
