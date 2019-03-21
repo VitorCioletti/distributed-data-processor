@@ -6,8 +6,6 @@
 
     class Program
     {
-        private static MessageQueue _messageQueue;
-
         static void Main(string[] args)
         {
             try
@@ -26,15 +24,13 @@
         private static void Initialize()
         {
             ConfigureCurrentDomainEvents();
+
             Configuration.Initialize();
             Backup.Initialize();
-
-            _messageQueue = new MessageQueue();
-
-            _messageQueue.Initialize();
+            MessageQueue.Initialize();
             Twitter.Initialize();
 
-            Func<Message, bool> trySend = message => _messageQueue.TrySend(message);
+            Func<Message, bool> trySend = message => MessageQueue.TrySend(message);
  
             Collector.TrySend += trySend;
             Backup.TrySend += trySend;
@@ -50,7 +46,7 @@
             
             Action finalizeConnections = () =>
             {
-                _messageQueue.Finalize();
+                MessageQueue.Finalize();
                 Backup.Finalize();
             };
 

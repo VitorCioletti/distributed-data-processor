@@ -7,13 +7,13 @@ namespace Twitter
     using Newtonsoft.Json;
     using static Configuration;
 
-    public class MessageQueue
+    public static class MessageQueue
     {
-        private IConnection _connection;
+        private static IConnection _connection;
 
-        private IModel _channel;
+        private static IModel _channel;
 
-        public void Initialize()
+        public static void Initialize()
         {
             var configuration = string.Empty;
 
@@ -27,20 +27,20 @@ namespace Twitter
 
             _channel = _connection.CreateModel();
         
-            Log.WriteInitialized(this);
+            Log.WriteInitialized(typeof(MessageQueue));
         }
 
-        public void Finalize()
+        public static void Finalize()
         {
             _connection?.Dispose();
 
             _connection = null;
             _channel = null;
 
-            Log.WriteFinalized(this);
+            Log.WriteFinalized(typeof(MessageQueue));
         }
 
-        public bool TrySend(Message message)
+        public static bool TrySend(Message message)
         {
             if (_connection == null)
                 throw new InvalidOperationException($"Connection '{nameof(_connection)}' not initialized.");
@@ -64,16 +64,5 @@ namespace Twitter
 
             return true;
         }
-
-        public bool TrySend(IEnumerable<Message> messages)
-        {
-            foreach (var message in messages)
-            {
-                if (!TrySend(message))
-                    return false;
-            }
-
-            return true;
-        } 
     }
 }
