@@ -41,7 +41,7 @@
             
             Twitter.StartTweetStreaming();
 
-            Log.Write("Initialization", "Initialized program.");
+            Log.WriteInitialized(typeof(Program));
         }
 
         private static void ConfigureCurrentDomainEvents()
@@ -50,8 +50,8 @@
             
             Action finalizeConnections = () =>
             {
-                Collector.Finalize();
                 _messageQueue.Finalize();
+                Backup.Finalize();
             };
 
             currentDomain.UnhandledException += (_, e) => 

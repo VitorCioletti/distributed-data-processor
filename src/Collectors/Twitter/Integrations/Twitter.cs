@@ -24,7 +24,7 @@ namespace Twitter
 
             _stream = Stream.CreateFilteredStream();
 
-            Log.Write("Twitter", "Initialized Twitter.");
+            Log.WriteInitialized(typeof(Twitter));
         }
 
         public static void StartTweetStreaming()

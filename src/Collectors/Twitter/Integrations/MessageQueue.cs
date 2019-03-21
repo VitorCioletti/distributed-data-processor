@@ -27,7 +27,7 @@ namespace Twitter
 
             _channel = _connection.CreateModel();
         
-            Log.Write("Message Queue", "Initialized message queue.");
+            Log.WriteInitialized(this);
         }
 
         public void Finalize()
@@ -37,7 +37,7 @@ namespace Twitter
             _connection = null;
             _channel = null;
 
-            Log.Write("Message Queue", "Finalized message queue.");
+            Log.WriteFinalized(this);
         }
 
         public bool TrySend(Message message)

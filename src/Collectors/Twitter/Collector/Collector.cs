@@ -15,12 +15,8 @@ namespace Twitter
         public static void Initialize()
         {
             _awaitingMessages = new List<Message>();
-            Log.Write("Collector","Initialized collector.");
-        }
-
-        public static void Finalize()
-        {
-            Log.Write("Collector", "Finalized collector.");
+            
+            Log.WriteInitialized(typeof(Collector));
         }
 
         public static void Collect(Message message)

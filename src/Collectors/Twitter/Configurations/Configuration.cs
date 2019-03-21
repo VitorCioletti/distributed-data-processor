@@ -22,6 +22,8 @@ namespace Twitter
             _configuration = builder.Build();
 
             _configuration.Get<Configuration>();
+
+            Log.WriteInitialized(typeof(Configuration));
         }
     }
 }
