@@ -2,7 +2,9 @@
     "Collector":
     {
         "MaximumAwaitingMessagesSize": 1000,
-        "CollectDelay": 1000
+        "CollectDelay": 1000,
+        "BackupDelay": 600000,
+        "BackupFolder": "backup"
     },
     "MessageQueue":
     {

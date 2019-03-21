@@ -6,6 +6,8 @@ namespace Twitter
 
         public int CollectDelay { get; set; }
 
-        public string BackupFile { get; set; }
+        public string BackupFolder { get; set; }
+
+        public long BackupDelay { get; set; }
     }
 }
