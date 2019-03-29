@@ -17,7 +17,6 @@
             catch (Exception e)
             {
                 Log.Write("Initialization", $"An error has occurred. {e.Message} {e.StackTrace}");
-
             }
         }
 

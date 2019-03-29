@@ -10,21 +10,21 @@
     {
         "MessageQueue":
         {
-            "Host": "",
-            "Port": 33,
-            "VirtualHost": "",
-            "User": "",
-            "Password": "3",
-            "Exchange": "3",
-            "RoutingKey": "3"
+            "Host": "104.43.214.8",
+            "Port": 5672,
+            "VirtualHost": "/",
+            "User": "admin",
+            "Password": "jimi225525",
+            "Exchange": "tweets",
+            "RoutingKey": "lula"
         },
         "Twitter": 
         {
-            "Consumer": "",
-            "ConsumerSecret": "",
-            "AccessToken": "",
-            "AccessTokenSecret": "",
-            "WordToSearch": "suzano"
+            "Consumer": "2eZPFEBTTmmYxaOqmPaTj8ARU",
+            "ConsumerSecret": "0Kf5t41NYPIfMTXRiI2FkZIXWIJG2t1upYas9PGAlgjAHTgIbZ",
+            "AccessToken": "2857219118-5gVK624IPjFPypNblJDopY9IS5BQRMzKnhPwz2k",
+            "AccessTokenSecret": "EpbilrsRVCuZ6a3COtAI3OFC1BiWmHD5HkxQPncA8K0nI",
+            "WordToSearch": "lula"
         }
     }
 }

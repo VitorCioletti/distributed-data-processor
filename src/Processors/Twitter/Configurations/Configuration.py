@@ -1,17 +1,17 @@
 import json
 import os
 
-def MessageQueueConfig():
+def MessageQueue():
     return GetConfig('MessageQueue')
 
-def PersistenceConfig():
+def Persistence():
     return GetConfig('Persistence')
 
 def GetConfig(configName):
-    configurationFile = 'configuration.json'
+    configurationFile = os.getcwd() + '/Configurations/config.json'
 
-    if os.path.isfile(configurationFile):
+    if not os.path.isfile(configurationFile):
         raise Exception(f'Configuration file {configurationFile} was not found.')
     
     with open(configurationFile) as config_file:
-        return json.load(config_file)
+        return json.load(config_file)[configName]

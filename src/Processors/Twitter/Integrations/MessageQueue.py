@@ -1,24 +1,38 @@
 import pika
-import Configuration
+from Configurations import Configuration
 from logzero import logger
 
-connection = pika.BlockingConnection(pika.ConnectionParameters(''))
+class MessageQueue:
 
-channel = connection.channel()
+    def __init__(self):
+        self.configuration = Configuration.MessageQueue()        
 
-def Initialize(ProcessMessage):
-    channel.basic_consume(
-        consumer_callback = ProcessMessage,
-        queue = '',
-        no_ack = False,
-    )
+    def Initialize(self):
+        credentials = pika.PlainCredentials(self.configuration['User'], self.configuration['Password'])
 
-    channel.start_consuming()
+        self.connection = pika.BlockingConnection(pika.ConnectionParameters(
+            host = self.configuration['Host'],
+            virtual_host = self.configuration['VirtualHost'],
+            credentials = credentials
+        ))
 
-    logger.Info("Initialized message queue consuming.")
+        self.channel = self.connection.channel()
 
-def Finalize():
-    channel.stop_consuming()
-    connection.close()
+        logger.info("Initialized message queue.")
 
-    logger.Info("Finalized message queue consuming.")
+    def StartConsuming(self, StoreMessage):
+        self.channel.basic_consume(
+            consumer_callback = StoreMessage,
+            queue = self.configuration['Queue'],
+            no_ack = False,
+        )
+
+        self.channel.start_consuming()
+
+        logger.info("Start message queue consuming.")
+
+    def Finalize(self):
+        self.channel.stop_consuming()
+        self.connection.close()
+
+        logger.info("Finalized message queue consuming.")

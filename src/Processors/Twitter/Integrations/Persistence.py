@@ -1,22 +1,29 @@
-import mysql.connector
+import psycopg2
+import json
 from logzero import logger
+from Configurations import Configuration
 
-def Insert(data):
-    db = mysql.connector.connect(
-        host = '',
-        user = '',
-        passwd = '',
-        database = ''
+def Insert(ch, method, properties, body):
+
+    config =  Configuration.Persistence()
+    message = json.loads(body)
+
+    connection = psycopg2.connect(
+        user = config["User"],
+        password = config["Password"],
+        host = config["Host"],
+        port = config["Port"],
+        database = config["Database"]
     )
 
-    cursor = db.cursor()
+    sql = "INSERT INTO Message VALUES (idcreator, subject, text, postedon)"
+    val = (message["IdCreator"], message["Subject"], message["Text"], message["PostedOn"])
 
-    sql = "INSERT INTO"
-    val = ('', '')
+    connection.cursor().execute(sql, val)
+    connection.commit()
+    connection.close()
+        
+    ch.basic_ack(delivery_tag = method.delivery_tag)
 
-    cursor.execute(sql, val)
-
-    db.commit()
-
-    logger.Info(f"Data '{data}' successfully inserted.")
+    logger.info(f"Data '{body}' successfully inserted.")
     

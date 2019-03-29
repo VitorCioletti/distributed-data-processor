@@ -1,16 +1,10 @@
 from logzero import logger
 
-Store = lambda m : None
+def Initialize():
+    logger.info('Initialized processor.')
 
-def Initialize(StoreMessage):
-    Store = StoreMessage
+def ProcessMessage(ch, method, properties, body):
     
-    logger.Info('Initialized processor.')
-
-def ProcessMessage(message):
-    if Store is None:
-        raise Exception('You must initialize first.')
-
-    Store(message)
+    ch.basic_ack(delivery_tag = method.delivery_tag)
     
-    logger.Info(f"Processed message: '{message}'.")
+    logger.info(f"Processed message: '{body}'.")

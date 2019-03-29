@@ -18,4 +18,8 @@
     <Content Include="config.json" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
+  </PropertyGroup>
+  
 </Project>
