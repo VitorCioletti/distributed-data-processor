@@ -48,21 +48,30 @@ namespace Twitter
             if (_channel == null)
                 throw new InvalidOperationException($"Channel '{nameof(_channel)}' not initialized.");
 
-            var json = JsonConvert.SerializeObject(message);
+            try
+            {
+                var json = JsonConvert.SerializeObject(message);
 
-            var bytes = Encoding.UTF8.GetBytes(json);
+                var bytes = Encoding.UTF8.GetBytes(json);
 
-            _channel.BasicPublish(
-                Integrations.MessageQueue.Exchange, 
-                Integrations.MessageQueue.RoutingKey, 
-                true, 
-                null, 
-                bytes
-            );
+                _channel.BasicPublish(
+                    Integrations.MessageQueue.Exchange, 
+                    Integrations.MessageQueue.RoutingKey, 
+                    true, 
+                    null, 
+                    bytes
+                );
 
-            Log.Write("Message Queue", $"Sent message: '{json}'.");
+                Log.Write("Message Queue", $"Sent message: '{json}'.");
 
-            return true;
+                return true;
+            }
+            catch (Exception e)
+            {
+                Log.WriteException("Message Queue", e);
+
+                return false;
+            }
         }
     }
 }
