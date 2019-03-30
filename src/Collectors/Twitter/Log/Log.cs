@@ -15,6 +15,9 @@ namespace Twitter
             WriteLine($"{DateTime.Now} {label.ToUpper()} - {log}");
         }
 
+        public static void WriteException(string label, Exception e) => 
+            Write(label, $"Exception: {e.Message} {e.StackTrace}");
+
         public static void WriteInitialized(Type t) => Write("Initialization", $"Initialized {t.Name}.");
     
         public static void WriteFinalized(Type t) => Write("Finalization", $"Finalized {t.Name}.");
