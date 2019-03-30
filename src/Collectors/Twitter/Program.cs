@@ -16,7 +16,11 @@
             }
             catch (Exception e)
             {
-                Log.Write("Initialization", $"An error has occurred. {e.Message} {e.StackTrace}");
+                Log.WriteException("Initialized", e);
+            }
+            finally
+            {
+                Finalize();
             }
         }
 
@@ -39,28 +43,30 @@
             Log.WriteInitialized(typeof(Program));
         }
 
+        private static void Finalize()
+        {
+            MessageQueue.Finalize();
+            Backup.Finalize();
+
+            Log.WriteFinalized(typeof(Program));
+        }
+
         private static void ConfigureCurrentDomainEvents()
         {
             var currentDomain = AppDomain.CurrentDomain;
             
-            Action finalizeConnections = () =>
-            {
-                MessageQueue.Finalize();
-                Backup.Finalize();
-            };
-
             currentDomain.UnhandledException += (_, e) => 
             {
                 var exception = (Exception)e.ExceptionObject;
 
-                finalizeConnections();
+                Finalize();
 
                 Log.Write("Error", $"Unhandled exception: {exception.Message} {exception.StackTrace}");
             };
 
             currentDomain.ProcessExit += (_, e) => 
             {
-                finalizeConnections();
+                Finalize();
 
                 Log.Write("Finalized", "Flagged to end.");
             };
