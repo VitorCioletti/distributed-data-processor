@@ -22,9 +22,8 @@ class MessageQueue:
 
     def StartConsuming(self, StoreMessage):
         self.channel.basic_consume(
-            consumer_callback = StoreMessage,
-            queue = self.configuration['Queue'],
-            no_ack = False,
+            self.configuration['Queue'],
+            StoreMessage
         )
 
         self.channel.start_consuming()
