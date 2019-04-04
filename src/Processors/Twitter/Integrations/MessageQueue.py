@@ -18,7 +18,7 @@ class MessageQueue:
 
         self.channel = self.connection.channel()
 
-        logger.info("Initialized message queue.")
+        logger.info("MESSAGEQUEUE - Initialized.")
 
     def StartConsuming(self, StoreMessage):
         self.channel.basic_consume(
@@ -28,10 +28,10 @@ class MessageQueue:
 
         self.channel.start_consuming()
 
-        logger.info("Start message queue consuming.")
+        logger.info("MESSAGEQUEUE - Started consuming.")
 
     def Finalize(self):
         self.channel.stop_consuming()
         self.connection.close()
 
-        logger.info("Finalized message queue consuming.")
+        logger.info("MESSAGEQUEUE - Finalized consuming.")

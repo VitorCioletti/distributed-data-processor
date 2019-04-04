@@ -14,4 +14,4 @@ def Insert(ch, method, _, body):
 
     ch.basic_ack(delivery_tag = method.delivery_tag)
 
-    logger.info(f"Tweet \"{tweet['Text']}\" from \"{tweet['IdCreator']}\"  successfully inserted.")
+    logger.info(f"PERSISTENCE - Tweet \"{tweet['Text']}\" from \"{tweet['IdCreator']}\"  successfully inserted.")

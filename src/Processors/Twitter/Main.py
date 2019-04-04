@@ -13,9 +13,9 @@ try:
     messageQueue.Initialize()
     messageQueue.StartConsuming(Persistence.Insert)
 except Exception as e:
-    logger.error(f'An unexpected error has ocurred. {e}')
+    logger.error(f'MAIN - An unexpected error has ocurred. {e}')
     sys.exit()
 
-logger.info('Initialized instance.')
+logger.info('MAIN - Initialized instance.')
 
 sleep(0)
