@@ -1,29 +1,17 @@
-import psycopg2
 import json
+from pymongo import MongoClient
 from logzero import logger
 from Configurations import Configuration
 
-def Insert(ch, method, properties, body):
+def Insert(ch, method, _, body):
 
-    config =  Configuration.Persistence()
-    message = json.loads(body)
+    client = MongoClient()
+    database = Configuration.Persistence()['Database']
+    tweet = json.loads(body) 
 
-    connection = psycopg2.connect(
-        user = config["User"],
-        password = config["Password"],
-        host = config["Host"],
-        port = config["Port"],
-        database = config["Database"]
-    )
+    tweets = client[database].tweets
+    tweets.insert_one(tweet)
 
-    sql = "INSERT INTO Message VALUES (idcreator, subject, text, postedon)"
-    val = (message["IdCreator"], message["Subject"], message["Text"], message["PostedOn"])
-
-    connection.cursor().execute(sql, val)
-    connection.commit()
-    connection.close()
-        
     ch.basic_ack(delivery_tag = method.delivery_tag)
 
-    logger.info(f"Data '{body}' successfully inserted.")
-    
+    logger.info(f"Tweet \"{tweet['Text']}\" from \"{tweet['IdCreator']}\"  successfully inserted.")
