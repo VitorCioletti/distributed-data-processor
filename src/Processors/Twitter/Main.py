@@ -6,14 +6,16 @@ from Integrations import MessageQueue
 from Integrations import Persistence
 
 try:
-    Processor.Initialize()
-    
     messageQueue = MessageQueue.MessageQueue()
+    persistence = Persistence.Persistence()
+
+    processor = Processor.Processor(persistence.InsertTweet, persistence.InsertAnalysis)
 
     messageQueue.Initialize()
-    messageQueue.StartConsuming(Persistence.Insert)
+    messageQueue.StartConsuming(processor.ProcessMessage)
 except Exception as e:
     logger.error(f'MAIN - An unexpected error has ocurred. {e}')
+    messageQueue.Finalize()
     sys.exit()
 
 logger.info('MAIN - Initialized instance.')

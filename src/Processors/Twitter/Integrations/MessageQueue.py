@@ -20,10 +20,10 @@ class MessageQueue:
 
         logger.info("MESSAGEQUEUE - Initialized.")
 
-    def StartConsuming(self, StoreMessage):
+    def StartConsuming(self, ProcessMessage):
         self.channel.basic_consume(
             self.configuration['Queue'],
-            StoreMessage
+            ProcessMessage
         )
 
         self.channel.start_consuming()
