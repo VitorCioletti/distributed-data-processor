@@ -1,0 +1,20 @@
+{
+    "MessageQueue":
+    {
+        "Host": "104.43.214.8",
+
+        "Port": "5672",
+
+        "VirtualHost": "/",
+
+        "User": "admin",
+
+        "Password": "",
+
+        "Queue": ""
+    },
+    "Persistence":
+    {
+        "Database": "processed-tweets"
+    }
+}
