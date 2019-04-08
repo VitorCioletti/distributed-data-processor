@@ -10,11 +10,17 @@ namespace Twitter.Integrations
     {
         public static Analysis GetAnalysis(DateTime date, string subject)
         {
-            var collection =  new MongoClient().GetDatabase("processed-tweets").GetCollection<Analysis>("analysis");
+            var collection =  new MongoClient("mongodb://localhost:27017").GetDatabase("processed-tweets").GetCollection<Analysis>("analysis");
 
-            var analysis = collection.Find(x => x.Date == date && x.Subject == subject).Single();
+            var analysis = collection.Find(a => 
+                a.Subject == subject
+            ).FirstOrDefault();
 
-            Log.Write("Persistence", $"Query analysis from \"{analysis.Date}\" and \"{analysis.Subject}\"");
+            var logMessage = analysis == null ? 
+                $"Analysis from \"{date}\" and \"{subject}\" not found." :  
+                $"Query analysis from \"{analysis.Date}\" and \"{analysis.Subject}\"";
+
+            Log.Write("Persistence", logMessage);
 
             return analysis;
         }
