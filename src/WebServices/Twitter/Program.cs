@@ -13,11 +13,11 @@
 
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             Log.Initialize();
 
-            CreateWebHostBuilder(args).Build().RunAsync().ContinueWith(t =>
+            await CreateWebHostBuilder(args).Build().RunAsync().ContinueWith(t =>
             {
                 Log.Write("Web Service", $"{t.Exception.Message} {t.Exception.StackTrace}");
             }, TaskContinuationOptions.OnlyOnFaulted);
