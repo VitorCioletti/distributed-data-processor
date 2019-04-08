@@ -14,16 +14,16 @@
             "Port": 5672,
             "VirtualHost": "/",
             "User": "admin",
-            "Password": "jimi225525",
+            "Password": "",
             "Exchange": "tweets",
             "RoutingKey": "lula"
         },
         "Twitter": 
         {
-            "Consumer": "2eZPFEBTTmmYxaOqmPaTj8ARU",
-            "ConsumerSecret": "0Kf5t41NYPIfMTXRiI2FkZIXWIJG2t1upYas9PGAlgjAHTgIbZ",
-            "AccessToken": "2857219118-5gVK624IPjFPypNblJDopY9IS5BQRMzKnhPwz2k",
-            "AccessTokenSecret": "EpbilrsRVCuZ6a3COtAI3OFC1BiWmHD5HkxQPncA8K0nI",
+            "Consumer": "",
+            "ConsumerSecret": "",
+            "AccessToken": "",
+            "AccessTokenSecret": "",
             "WordToSearch": "lula"
         }
     }
