@@ -16,4 +16,8 @@
     <PackageReference Include="MongoCSharpDriver" Version="2.8.0" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+
 </Project>
