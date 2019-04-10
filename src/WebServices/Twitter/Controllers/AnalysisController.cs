@@ -11,7 +11,7 @@
     public class AnalysisController : ControllerBase
     {
         [HttpGet, Route("analysis")]
-        public ActionResult<string> Analysis(DateTime date, string subject)
+        public ActionResult<string> Analysis(string date, string subject)
         {
             var analysis = Persistence.GetAnalysis(date, subject);
 

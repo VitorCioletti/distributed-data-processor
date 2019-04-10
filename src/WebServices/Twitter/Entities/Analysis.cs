@@ -2,17 +2,22 @@ namespace Twitter.Entities
 {
 
     using System;
+    using MongoDB.Bson;
+    using MongoDB.Bson.Serialization.Attributes;
 
     public class Analysis
     {
-        public DateTime Date { get; set; }
+        [BsonId]
+        public ObjectId _id { get; set; }
 
-        public int Messages { get; set; }
+        public string date { get; set; }
 
-        public long Subjectivity { get; set; }
+        public long messages { get; set; }
 
-        public long Polarity { get; set; }
+        public double subjectivity { get; set; }
 
-        public string Subject { get; set; }
+        public double polarity { get; set; }
+
+        public string subject { get; set; }
     }
 }
